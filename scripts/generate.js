@@ -26,11 +26,11 @@ function main() {
   generateLanguageIndex()
   console.log('Generating index.category.m3u...')
   generateCategoryIndex()
-  console.log('Generating /countries...')
+  console.log('Generating /countries and countries.json ...')
   generateCountries()
-  console.log('Generating /categories...')
+  console.log('Generating /categories and categories.json ...')
   generateCategories()
-  console.log('Generating /languages...')
+  console.log('Generating /languages and languages.json ...')
   generateLanguages()
   console.log('Done.\n')
 
@@ -162,38 +162,54 @@ function generateCategoryIndex() {
 
 function generateCountries() {
   const outputDir = `${ROOT_DIR}/countries`
+  const jsonFileName = `${ROOT_DIR}/countries.json`
+  const channelByCountry = {}
   helper.createDir(outputDir)
 
   for (let cid in list.countries) {
     let country = list.countries[cid]
     const filename = `${outputDir}/${cid}.m3u`
     helper.createFile(filename, '#EXTM3U\n')
+    helper.appendToFile(jsonFileName, )
+
+    if (cid !== 'unsorted') {
+      channelByCountry[cid] = country
+    }
 
     const channels = helper.sortBy(Object.values(country), ['name', 'url'])
     for (let channel of channels) {
       helper.appendToFile(filename, channel.toString())
     }
   }
+
+  helper.createFile(jsonFileName, JSON.stringify(channelByCountry))
 }
 
 function generateCategories() {
   const outputDir = `${ROOT_DIR}/categories`
+  const jsonFileName = `${ROOT_DIR}/categories.json`
+  const channelByCategory = {}
   helper.createDir(outputDir)
 
   for (let cid in list.categories) {
     let category = list.categories[cid]
     const filename = `${outputDir}/${cid}.m3u`
     helper.createFile(filename, '#EXTM3U\n')
+    channelByCategory[cid] = category
 
     const channels = helper.sortBy(Object.values(category), ['name', 'url'])
     for (let channel of channels) {
       helper.appendToFile(filename, channel.toString())
     }
   }
+
+  helper.createFile(jsonFileName, JSON.stringify(channelByCategory))
 }
 
 function generateLanguages() {
   const outputDir = `${ROOT_DIR}/languages`
+  const jsonFileName = `${ROOT_DIR}/languages.json`
+  const channelByLanguage = {}
   helper.createDir(outputDir)
 
   for (let lid in list.languages) {
@@ -201,11 +217,17 @@ function generateLanguages() {
     const filename = `${outputDir}/${lid}.m3u`
     helper.createFile(filename, '#EXTM3U\n')
 
+    if (lid !== 'undefined') {
+      channelByLanguage[lid] = language
+    }
+
     const channels = helper.sortBy(Object.values(language), ['name', 'url'])
     for (let channel of channels) {
       helper.appendToFile(filename, channel.toString())
     }
   }
+
+  helper.createFile(jsonFileName, JSON.stringify(channelByLanguage))
 }
 
 main()

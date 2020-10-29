@@ -337,6 +337,14 @@ If successful, you should get the following response:
 ]
 ```
 
+Other available channels managed by category, language, country in JSON format.
+
+ ```
+ https://iptv-org.github.io/iptv/languages.json
+ https://iptv-org.github.io/iptv/categories.json
+ https://iptv-org.github.io/iptv/countries.json
+ ```
+
 ## Resources
 
 You can find links to various IPTV related resources in this repository [iptv-org/awesome-iptv](https://github.com/iptv-org/awesome-iptv).
